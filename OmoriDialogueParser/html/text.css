@@ -1,0 +1,248 @@
+body {
+    background: #cdcdcd;
+    font-family: OMORI2;
+    font-size: 22px;
+}
+
+.credits {
+    font-size: 30px
+}
+
+div.textbox {
+    background: black;
+    color: white;
+    white-space: pre-wrap;
+    word-break: break-all;
+    width: 350px;
+    padding: 4px;
+    border: 2px solid white;
+    margin-top: 4px;
+    margin-bottom: 10px;
+}
+
+a.textbox {
+    color: white;
+    text-decoration: none;
+}
+
+a.notext {
+    color: grey;
+    text-decoration: none;
+}
+
+div.speakerbox {
+    background: black;
+    color: white;
+    white-space: pre-wrap;
+    word-break: break-all;
+    width: 350px;
+    padding: 1px;
+    border: 2px solid white;
+    margin-top: 2px;
+    display: inline;
+}
+
+a.speakerbox {
+    color: white;
+    text-decoration: none;
+}
+
+div#textboxes {
+    display: inline;
+}
+
+a.heading {
+    color: black;
+    text-decoration: none;
+}
+
+span.fOMORI_GAME {
+    font-family: OMORI1, Monospace;
+}
+
+span.fOMORI_GAME2 {
+    font-family: OMORI2, OMORI1, Monospace;
+}
+
+span.s6 {
+    font-size: 31px;
+}
+
+span.s5 {
+    font-size: 28px;
+}
+
+span.s3 {
+    font-size: 17px;
+}
+
+span.s2 {
+    font-size: 15px;
+}
+
+span.c0 {
+    color: #ffffff;
+}
+
+span.c1 {
+    color: #6095FF;
+}
+
+span.c2 {
+    color: #D26656;
+}
+
+span.c3 {
+    color: #5BD864;
+}
+
+span.c4 {
+    color: #FFD966;
+}
+
+span.c5 {
+    color: #F3B542;
+}
+
+span.c6 {
+    color: #000000;
+}
+
+span.c7 {
+    color: #808080;
+}
+
+span.c8 {
+    color: #223F5C;
+}
+
+span.c9 {
+    color: #D26656;
+}
+
+span.c10 {
+    color: #223F5C;
+}
+
+span.c11 {
+    color: #63F7EE;
+}
+
+span.c12 {
+    color: #223F5C;
+}
+
+span.c13 {
+    color: #C263E2;
+}
+
+span.c14 {
+    color: #000000;
+}
+
+@keyframes wave {
+    from { transform: translateY(0); }
+
+    to { transform: translateY(-6px); }
+}
+
+span.sinv {
+    display: inline-block;
+    animation-direction: alternate;
+    animation-duration: 0.3s;
+    animation-iteration-count: infinite;
+    animation-name: wave;
+}
+
+@font-face {
+    font-family: "OMORI1";
+    src: url('OMORI_GAME.ttf') format("truetype-variations");
+}
+
+@font-face {
+    font-family: "OMORI2";
+    src: url('OMORI_GAME2.ttf') format("truetype-variations");
+}
+
+span.quake {
+    animation: quakeanim 1s linear infinite;
+    position: relative;
+}
+
+quakec:nth-child(10n+1) {
+    animation-delay: .1s;
+}
+
+quakec:nth-child(10n+2) {
+    animation-delay: .2s;
+}
+
+quakec:nth-child(10n+3) {
+    animation-delay: .3s;
+}
+
+quakec:nth-child(10n+4) {
+    animation-delay: .4s;
+}
+
+quakec:nth-child(10n+5) {
+    animation-delay: .5s;
+}
+
+quakec:nth-child(10n+6) {
+    animation-delay: .6s;
+}
+
+quakec:nth-child(10n+7) {
+    animation-delay: .7s;
+}
+
+quakec:nth-child(10n+8) {
+    animation-delay: .8s;
+}
+
+quakec:nth-child(10n+9) {
+    animation-delay: .9s;
+}
+
+quakec:nth-child(10n+0) {
+    animation-delay: 1s;
+}
+
+@keyframes quakeanim {
+    0% {
+        top: 0;
+    }
+
+    14% {
+        top: 2.5px;
+        left: 2.5px;
+    }
+
+    28% {
+        top: -2.5px;
+        left: -2.5px;
+    }
+
+    42% {
+        top: 5px;
+    }
+
+    56% {
+        top: -5px;
+    }
+
+    70% {
+        top: 2.5px;
+        left: 2.5px;
+    }
+
+    84% {
+        top: -2.5px;
+        left: -2.5px;
+    }
+
+    100% {
+        top: 0;
+    }
+}

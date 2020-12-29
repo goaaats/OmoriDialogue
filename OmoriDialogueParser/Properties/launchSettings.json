@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "OmoriDialogueParser": {
+      "commandName": "Project",
+      "commandLineArgs": "languagesdec"
+    }
+  }
+}
