@@ -162,6 +162,14 @@ namespace OmoriDialogueParser
                     payload = new TextPayload(string.Empty);
                     return true;
 
+                case @"\$": // WAIT FOR 1/4s (todo: add some kinda icon)
+                    payload = new TextPayload("[current currency]");
+                    return true;
+
+                case @"\LECLEAR": // CLEAR TEXT EFFECTS (todo)
+                    payload = new TextPayload(string.Empty);
+                    return true;
+
                 // Escape characters
                 case "\\\"":
                     payload = new TextPayload("\"");
