@@ -95,7 +95,7 @@ namespace OmoriDialogueParser
         {
             payload = new TextPayload(text);
 
-            var sinvRegex = Regex.Match(text, @"\\(SINV|sinv)\[(0|1|2)\]");
+            var sinvRegex = Regex.Match(text, @"\\(SINV|sinv|Sinv)\[(0|1|2)\]");
             if (sinvRegex.Success)
             {
                 payload = new SineWaveAnimationPayload(sinvRegex.Groups[2].ToString() == "1" || sinvRegex.Groups[2].ToString() == "2"); // todo: add the other sinv animation
