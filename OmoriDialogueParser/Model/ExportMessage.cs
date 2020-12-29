@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace OmoriDialogueParser.Model
 {
     class ExportMessage
     {
-        public string Speaker { get; set; }
-        public string Html { get; set; }
+        [JsonProperty("s")] public string Speaker { get; set; }
+        [JsonProperty("h")] public string Html { get; set; }
+
+        [JsonProperty("b")] public int? Background { get; set; }
+        [JsonProperty("fs")] public string FaceSet { get; set; }
+        [JsonProperty("fi")] public int? FaceIndex { get; set; }
     }
 }

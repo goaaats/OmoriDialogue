@@ -56,7 +56,10 @@ namespace OmoriDialogueParser
                     var messages = languageFile.Messages.Select(languageFileMessage => new ExportMessage
                     {
                         Html = languageFileMessage.Value.Text.ToHtml(),
-                        Speaker = languageFileMessage.Value.Text.GetSpeaker()
+                        Speaker = languageFileMessage.Value.Text.GetSpeaker(),
+                        Background = languageFileMessage.Value.Background,
+                        FaceIndex = languageFileMessage.Value.Faceindex,
+                        FaceSet = languageFileMessage.Value.Faceset
                     }).ToList();
 
                     fileParsedDict.Add(Path.GetFileNameWithoutExtension(file.Name), messages);

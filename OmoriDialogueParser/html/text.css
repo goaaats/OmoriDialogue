@@ -8,6 +8,10 @@ body {
     font-size: 30px
 }
 
+div.faceandtext {
+    overflow-y: hidden;
+}
+
 div.textbox {
     background: black;
     color: white;
@@ -18,6 +22,8 @@ div.textbox {
     border: 2px solid white;
     margin-top: 4px;
     margin-bottom: 10px;
+    float: left;
+    margin-right: 10px;
 }
 
 a.textbox {
@@ -62,6 +68,15 @@ span.fOMORI_GAME {
 
 span.fOMORI_GAME2 {
     font-family: OMORI2, OMORI1, Monospace;
+}
+
+div.facebox {
+    width: 106px;
+    height: 106px;
+    background: black;
+    border: 2px solid white;
+    float: left;
+    margin-top: 4px;
 }
 
 span.s6 {

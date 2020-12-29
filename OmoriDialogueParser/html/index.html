@@ -1,11 +1,14 @@
 ﻿<!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="UTF-8">
     <script src="text.js"></script>
     <link rel="stylesheet" type="text/css" href="text.css">
     <title>OMORI dialogue dump</title>
-  </head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OMORI dialogue dump">
+    <meta name="keywords" content="OMORI, text, dialogue, speech">
+</head>
 <body>
 
 <h2>OMORI Dialogue</h2>
@@ -18,6 +21,8 @@ If you notice any mistakes, please open an issue <a href="https://github.com/goa
 <select id="characters" name="characters">
     <option value="">Select a character...</option>
 </select>
+<br/>
+<br/>
 <div id="textboxes">
 </div>
 <noscript>
@@ -41,24 +46,26 @@ If you notice any mistakes, please open an issue <a href="https://github.com/goa
 
         var text = t[character][index];
 
-        if (text.Speaker !== null) {
+        if (text.s !== null) {
             var name = document.createElement('div');
             name.classList.add('speakerbox');
             var link = document.createElement('a');
             link.href = '#' + character + ':' + index;
             link.classList.add('speakerbox');
-            link.innerHTML = text.Speaker;
+            link.innerHTML = text.s;
             name.appendChild(link);
 
             container.appendChild(name);
         }
 
-        var msgText = text.Html;
+        var msgText = text.h;
         var hasNoText = false;
         if (msgText === "") {
             msgText = "Message has no text...";
             hasNoText = true;
         }
+
+        var textAndFace = document.createElement('div');
 
         var box = document.createElement('div');
         box.classList.add('textbox');
@@ -72,7 +79,24 @@ If you notice any mistakes, please open an issue <a href="https://github.com/goa
         linkTb.innerHTML = msgText;
         box.appendChild(linkTb);
 
-        container.appendChild(box);
+        textAndFace.appendChild(box);
+        textAndFace.classList.add('faceandtext');
+
+        if (text.fs !== null) {
+            var face = document.createElement('div');
+
+            var fCol = Math.floor(text.fi % 4);
+            var fRow = Math.floor(text.fi / 4);
+            var cOffset = (fCol) * 106;
+            var rOffset = (fRow) * 106;
+
+            face.classList.add('facebox');
+            face.style = "background-image: url('faces/" + text.fs + ".png'); background-position: -" + cOffset + "px -" + rOffset + "px;";
+
+            textAndFace.appendChild(face);
+        }
+
+        container.appendChild(textAndFace);
 
         return container;
     }
