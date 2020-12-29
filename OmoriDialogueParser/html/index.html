@@ -40,7 +40,7 @@ If you notice any mistakes, please open an issue <a href="https://github.com/goa
 <script>
     "use strict";
 
-    function textbox(character, index) {
+    function textbox(character, index, doFaces) {
 
         var container = document.createElement('div');
 
@@ -82,7 +82,7 @@ If you notice any mistakes, please open an issue <a href="https://github.com/goa
         textAndFace.appendChild(box);
         textAndFace.classList.add('faceandtext');
 
-        if (text.fs !== null) {
+        if (text.fs !== null && doFaces) {
             var face = document.createElement('div');
 
             var fCol = Math.floor(text.fi % 4);
@@ -101,13 +101,13 @@ If you notice any mistakes, please open an issue <a href="https://github.com/goa
         return container;
     }
 
-    function addBox(character, index) {
-        document.getElementById('textboxes').appendChild(textbox(character, index));
+    function addBox(character, index, doFaces) {
+        document.getElementById('textboxes').appendChild(textbox(character, index, doFaces));
     }
 
-    function addBoxes(character) {
+    function addBoxes(character, doFaces) {
         for (var i = 0; i < t[character].length; i++) {
-            addBox(character, i);
+            addBox(character, i, doFaces);
         }
     }
 
@@ -161,15 +161,15 @@ If you notice any mistakes, please open an issue <a href="https://github.com/goa
                 link.href = "#" + characters[i];
                 heading.appendChild(link);
                 boxes.appendChild(heading);
-                addBoxes(characters[i]);
+                addBoxes(characters[i], false);
             }
         } else if (character !== "") {
             if (indexes !== null) {
                 for (var i = 0; i < indexes.length; i++) {
-                    addBox(character, indexes[i]);
+                    addBox(character, indexes[i], true);
                 }
             } else {
-                addBoxes(character);
+                addBoxes(character, true);
             }
         }
     }
@@ -189,6 +189,9 @@ If you notice any mistakes, please open an issue <a href="https://github.com/goa
             document.querySelector('select[name="characters"]').onchange = function(event) {
                 window.location.hash = "#" + event.target.value;
             };
+
+            document.querySelector('select[name="characters"]').selectedIndex = 2;
+            window.location.hash = "#01_cutscenes_neighbors";
         },
         false);
 
