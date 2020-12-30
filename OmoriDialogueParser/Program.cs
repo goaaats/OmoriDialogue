@@ -74,7 +74,7 @@ namespace OmoriDialogueParser
                 }
             }
 
-            File.WriteAllText(Path.Combine("html", "text.js"), $"var t = {JsonConvert.SerializeObject(fileParsedDict, Formatting.Indented)}");
+            File.WriteAllText(Path.Combine("html", "text.js"), $"var t = {JsonConvert.SerializeObject(fileParsedDict)}");
         }
     }
 }
