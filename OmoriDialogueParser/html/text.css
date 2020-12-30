@@ -16,7 +16,7 @@ div.textbox {
     background: black;
     color: white;
     white-space: pre-wrap;
-    word-break: break-all;
+    /* word-break: break-all; */
     width: 350px;
     padding: 4px;
     border: 2px solid white;
@@ -51,6 +51,8 @@ div.speakerbox {
 a.speakerbox {
     color: white;
     text-decoration: none;
+    padding-left: 4px;
+    padding-right: 4px;
 }
 
 div#textboxes {
@@ -156,9 +158,13 @@ span.c14 {
 }
 
 @keyframes wave {
-    from { transform: translateY(0); }
+    from {
+        transform: translateY(0);
+    }
 
-    to { transform: translateY(-6px); }
+    to {
+        transform: translateY(-6px);
+    }
 }
 
 span.sinv {
