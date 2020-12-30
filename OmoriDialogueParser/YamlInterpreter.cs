@@ -170,6 +170,10 @@ namespace OmoriDialogueParser
                     payload = new TextPayload(string.Empty);
                     return true;
 
+                case @"\lb": // LINEBREAK? (this might be used for choices, todo: investigate)
+                    payload = new TextPayload("<br>", false);
+                    return true;
+
                 // Escape characters
                 case "\\\"":
                     payload = new TextPayload("\"");
