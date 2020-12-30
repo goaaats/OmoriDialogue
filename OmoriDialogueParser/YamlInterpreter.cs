@@ -140,6 +140,10 @@ namespace OmoriDialogueParser
 
             switch (text)
             {
+                case @"\#": // ESCAPE
+                    payload = new TextPayload(string.Empty);
+                    return true;
+
                 case @"\!": // WAIT FOR INPUT (todo: add some kinda icon)
                     payload = new TextPayload(string.Empty);
                     return true;
@@ -194,6 +198,18 @@ namespace OmoriDialogueParser
                     return true;
                 case @"\n[8]":
                     payload = new TextPayload("SUNNY");
+                    return true;
+                case @"\n[9]":
+                    payload = new TextPayload("AUBREY");
+                    return true;
+                case @"\n[10]":
+                    payload = new TextPayload("KEL");
+                    return true;
+                case @"\n[11]":
+                    payload = new TextPayload("HERO");
+                    return true;
+                case @"\n[16]":
+                    payload = new TextPayload("BERLY");
                     return true;
 
                 // Text size
@@ -326,6 +342,12 @@ namespace OmoriDialogueParser
                     return true;
                 case @"\swe":
                     payload = new SpeakerPayload("SWEETHEART");
+                    return true;
+                case @"\smm":
+                    payload = new SpeakerPayload("SPROUT MOLE MIKE");
+                    return true;
+                case @"\jaw":
+                    payload = new SpeakerPayload("MR. JAWSUM");
                     return true;
                 case @"\ems":
                     payload = new SpeakerPayload("EMS");
