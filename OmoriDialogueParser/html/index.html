@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <script src="text.js"></script>
+    <script src="text_bychara.js"></script>
     <link rel="stylesheet" type="text/css" href="text.css">
     <title>OMORI dialogue dump</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,7 +22,9 @@ If you notice any mistakes, please open an issue <a href="https://github.com/goa
     <option value="">Select one...</option>
 </select>
 <br/>
+<b><a href="maptext.html">Sort by language file instead...</a></b>
 <br/>
+<br />
 <div id="textboxes">
 </div>
 <noscript>
@@ -40,11 +42,11 @@ If you notice any mistakes, please open an issue <a href="https://github.com/goa
 <script>
     "use strict";
 
-    function textbox(character, index, doFaces) {
+    function textbox(character, map, index, doFaces) {
 
         var container = document.createElement('div');
 
-        var text = t[character][index];
+        var text = t[character][map][index];
 
         if (text.s !== null) {
             var name = document.createElement('div');
@@ -70,7 +72,7 @@ If you notice any mistakes, please open an issue <a href="https://github.com/goa
         var box = document.createElement('div');
         box.classList.add('textbox');
         var linkTb = document.createElement('a');
-        linkTb.href = '#' + character + ':' + index;
+        linkTb.href = '#' + character + ':' + map + ":" + index;
         linkTb.classList.add('textbox');
 
         if (hasNoText)
@@ -101,28 +103,31 @@ If you notice any mistakes, please open an issue <a href="https://github.com/goa
         return container;
     }
 
-    function addBox(character, index, doFaces) {
-        document.getElementById('textboxes').appendChild(textbox(character, index, doFaces));
+    function addBox(character, map, index, doFaces) {
+        document.getElementById('textboxes').appendChild(textbox(character, map, index, doFaces));
     }
 
-    function addBoxes(character, doFaces) {
-        for (var i = 0; i < t[character].length; i++) {
-            addBox(character, i, doFaces);
+    function addBoxes(character, map, doFaces) {
+        for (var i = 0; i < t[character][map].length; i++) {
+            addBox(character, map, i, doFaces);
         }
     }
 
-    function setSelection(character, indexes) {
+    function setSelection(character, map, indexes) {
         var options = document.getElementById('characters').children;
         for (var i = 0; i < options.length; i++) {
             if (options[i].value === character) {
                 options[i].selected = true;
             }
         }
-        if (indexes === null) {
+        if (indexes === null && map !== null) {
+            window.location.hash = "#" + character + ":" + map;
+        } else if (indexes === null && map === null) {
             window.location.hash = "#" + character;
         } else {
-            window.location.hash = "#" + character + ":" + indexes.join();
+            window.location.hash = "#" + character + ":" + map + ":" + indexes.join();
         }
+
         if (character === "") {
             document.title = "OMORI dialogue dump";
         } else {
@@ -132,10 +137,17 @@ If you notice any mistakes, please open an issue <a href="https://github.com/goa
 
     function writeDialogue(character) {
         var indexes = null;
+        var map = null;
         var asList = character.split(':');
         if (asList.length === 2) {
             character = asList[0];
-            indexes = asList[1].split(',');
+            map = asList[1];
+        }
+        else if (asList.length === 3) {
+            character = asList[0];
+            map = asList[1];
+
+            indexes = asList[2].split(',');
             if (indexes.length === 1 && indexes[0] === "") {
                 indexes = [];
             }
@@ -146,13 +158,17 @@ If you notice any mistakes, please open an issue <a href="https://github.com/goa
         if (t[character] === undefined) {
             character = "";
         }
+
         document.getElementById('textboxes').innerHTML = "";
-        setSelection(character, indexes);
+        setSelection(character, map, indexes);
+
         if (character === "") {
             var boxes = document.getElementById('textboxes');
             var characters = Object.keys(t);
             characters.sort()
             for (var i = 0; i < characters.length; i++) {
+                var maps = Object.keys(t[characters[i]]);
+
                 var heading = document.createElement('h1');
                 heading.classList.add('heading');
                 var link = document.createElement('a');
@@ -161,15 +177,44 @@ If you notice any mistakes, please open an issue <a href="https://github.com/goa
                 link.href = "#" + characters[i];
                 heading.appendChild(link);
                 boxes.appendChild(heading);
-                addBoxes(characters[i], false);
+
+                for (var j = 0; j < maps.length; j++) {
+                    var heading = document.createElement('h2');
+                    heading.classList.add('heading');
+                    var link = document.createElement('a');
+                    //link.classList.add('heading');
+                    link.appendChild(document.createTextNode(maps[j]));
+                    link.href = "maptext.html#" + maps[j];
+                    heading.appendChild(link);
+                    boxes.appendChild(heading);
+
+                    addBoxes(characters[i], maps[j], false);
+                }
             }
         } else if (character !== "") {
             if (indexes !== null) {
                 for (var i = 0; i < indexes.length; i++) {
-                    addBox(character, indexes[i], true);
+                    addBox(character, map, indexes[i], true);
                 }
-            } else {
-                addBoxes(character, true);
+            } else if (map !== null) {
+                addBoxes(character, map, true);
+            } 
+            else {
+                var maps = Object.keys(t[character]);
+                var boxes = document.getElementById('textboxes');
+
+                for (var j = 0; j < maps.length; j++) {
+                    var heading = document.createElement('h2');
+                    heading.classList.add('heading');
+                    var link = document.createElement('a');
+                    //link.classList.add('heading');
+                    link.appendChild(document.createTextNode(maps[j]));
+                    link.href = "maptext.html#" + maps[j];
+                    heading.appendChild(link);
+                    boxes.appendChild(heading);
+
+                    addBoxes(character, maps[j], true);
+                }
             }
         }
     }
@@ -191,8 +236,8 @@ If you notice any mistakes, please open an issue <a href="https://github.com/goa
             };
 
             if (window.location.hash === "") {
-                document.querySelector('select[name="characters"]').selectedIndex = 2;
-                window.location.hash = "#01_cutscenes_neighbors";
+                document.querySelector('select[name="characters"]').selectedIndex = 241;
+                window.location.hash = "#KEL";
             }
         },
         false);
