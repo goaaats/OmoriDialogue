@@ -65,6 +65,9 @@
     <None Update="html\faces\MainCharacter_Mari.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="html\favicon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="html\index.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
