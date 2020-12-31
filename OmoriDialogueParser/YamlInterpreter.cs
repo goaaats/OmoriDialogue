@@ -39,9 +39,6 @@ namespace OmoriDialogueParser
 
                 var text = yaml.FieldOrNull("text");
 
-                if (text.Contains("\\n<7"))
-                    Debugger.Break();
-
                 // Handle pure escape characters
                 if (text.Contains("\\#"))
                     text = text.Replace("\\#", "#");
