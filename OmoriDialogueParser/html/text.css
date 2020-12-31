@@ -36,6 +36,26 @@ a.notext {
     text-decoration: none;
 }
 
+a.speciallink {
+    color: gray;
+}
+
+div.nav > a {
+    color: darkblue;
+}
+
+div.nav > span {
+    color: gray;
+}
+
+div.nav {
+    border-radius: 5px;
+    display: inline;
+    font-size: 20px;
+    border: 2px solid black;
+    padding: 4px;
+}
+
 div.speakerbox {
     background: black;
     color: white;
@@ -266,4 +286,13 @@ quakec:nth-child(10n+0) {
     100% {
         top: 0;
     }
+}
+
+table, th, td {
+    border: 1px solid black;
+    font-size: 25px;
+}
+
+td > a {
+    color: black;
 }

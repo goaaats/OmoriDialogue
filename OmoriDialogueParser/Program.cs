@@ -21,6 +21,8 @@ namespace OmoriDialogueParser
 
             var langDir = new DirectoryInfo(args[0]);
 
+            var system = JsonConvert.DeserializeObject<Model.System>(File.ReadAllText("System.json"));
+
             var fileParsedDict = new Dictionary<string, IEnumerable<ExportMessage>>();
 
             foreach (var file in langDir.EnumerateFiles("*.yaml"))
@@ -46,7 +48,7 @@ namespace OmoriDialogueParser
 
                 try
                 {
-                    var languageFile = YamlInterpreter.Parse(textReader);
+                    var languageFile = YamlInterpreter.Parse(textReader, system);
 
                     if (languageFile == null)
                     {
@@ -102,6 +104,27 @@ namespace OmoriDialogueParser
             }
 
             File.WriteAllText(Path.Combine("html", "text_bychara.js"), $"var t = {JsonConvert.SerializeObject(byCharaDict)}");
+
+            // Make variable page
+            var variables = string.Empty;
+            for (var i = 0; i < system.variables.Count; i++)
+            {
+                variables +=
+                    $"\n<tr>\r\n            <td><a id=\"v{i}\" href=\"#v{i}\">{i}</a></td>\r\n            <td>{system.variables[i]}</td>\r\n        </tr>";
+            }
+
+            var varTemplate = File.ReadAllText(Path.Combine("template", "variables.htmt"));
+            File.WriteAllText(Path.Combine("html", "variables.html"), string.Format(varTemplate, variables));
+
+            var switches = string.Empty;
+            for (var i = 0; i < system.switches.Count; i++)
+            {
+                switches +=
+                    $"\n<tr>\r\n            <td><a id=\"v{i}\" href=\"#v{i}\">{i}</a></td>\r\n            <td>{system.switches[i]}</td>\r\n        </tr>";
+            }
+
+            var switchesTemplate = File.ReadAllText(Path.Combine("template", "switches.htmt"));
+            File.WriteAllText(Path.Combine("html", "switches.html"), string.Format(switchesTemplate, switches));
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Mime;
@@ -19,7 +20,7 @@ namespace OmoriDialogueParser
 
         private YamlInterpreter(){}
 
-        public static YamlInterpreter Parse(TextReader reader)
+        public static YamlInterpreter Parse(TextReader reader, Model.System system)
         {
             var stream = new YamlStream();
             stream.Load(reader);
@@ -36,9 +37,22 @@ namespace OmoriDialogueParser
             {
                 var yaml = messageNode as YamlMappingNode;
 
+                var text = yaml.FieldOrNull("text");
+
+                if (text.Contains("\\n<7"))
+                    Debugger.Break();
+
+                // Handle pure escape characters
+                if (text.Contains("\\#"))
+                    text = text.Replace("\\#", "#");
+
+                // Bodge fix for recursive \\n... Only in ALBUM atm
+                if (text.Contains("\\n[8]"))
+                    text = text.Replace("\\n[8]", "SUNNY");
+
                 var parsedMsg = new Message
                 {
-                    Text = ParsePayloads(yaml.FieldOrNull("text")),
+                    Text = ParsePayloads(text, system),
                     Faceset = yaml.FieldOrNull("faceset"),
                     Background = yaml.FieldOrNull("background").ToNullableInt(),
                     Faceindex = yaml.FieldOrNull("faceindex").ToNullableInt(),
@@ -54,7 +68,7 @@ namespace OmoriDialogueParser
             };
         }
 
-        private static PayloadList ParsePayloads(string text)
+        private static PayloadList ParsePayloads(string text, Model.System system)
         {
             if (text == null)
                 throw new ArgumentException("Text cannot be null.", nameof(text));
@@ -67,7 +81,7 @@ namespace OmoriDialogueParser
             {
                 currentPayloadText += text[i];
 
-                if (TryGetPayload(currentPayloadText, out var parsedPayload))
+                if (TryGetPayload(currentPayloadText, out var parsedPayload, system))
                 {
                     if (!(parsedPayload is TextPayload))
                         list.Add(parsedPayload);
@@ -91,7 +105,7 @@ namespace OmoriDialogueParser
             return list;
         }
 
-        private static bool TryGetPayload(string text, out IPayload payload)
+        private static bool TryGetPayload(string text, out IPayload payload, Model.System system)
         {
             payload = new TextPayload(text);
 
@@ -109,7 +123,7 @@ namespace OmoriDialogueParser
                 return true;
             }
 
-            var fnRegex = Regex.Match(text, @"\\(fn|Fn)\<(.*)\>");
+            var fnRegex = Regex.Match(text, @"\\(fn|Fn|FN)\<(.*)\>");
             if (fnRegex.Success)
             {
                 payload = new FontPayload(fnRegex.Groups[2].ToString());
@@ -123,15 +137,28 @@ namespace OmoriDialogueParser
                 return true;
             }
 
+            var vRegex = Regex.Match(text, @"\\(V|v)\[(\d*)\]");
+            if (vRegex.Success)
+            {
+                var id = int.Parse(vRegex.Groups[2].ToString());
+                var name = system.variables[id];
+
+                if (string.IsNullOrEmpty(name))
+                    name = id.ToString();
+
+                payload = new VariablePayload(id, name);
+                return true;
+            }
+
             // "Commands" - we don't need to parse these, they're mostly for in-game interactions
-            var comRegex = Regex.Match(text, @"\\(Com|com)\[(\d*)\]");
+            var comRegex = Regex.Match(text, @"\\(Com|com|COM)\[(\d*)\]");
             if (comRegex.Success)
             {
                 payload = new TextPayload(string.Empty);
                 return true;
             }
 
-            var quakeRegex = Regex.Match(text, @"\\(quake|Quake)\[(0|1)\]");
+            var quakeRegex = Regex.Match(text, @"\\(quake|Quake|QUAKE)\[(0|1)\]");
             if (quakeRegex.Success)
             {
                 payload = new QuakeAnimationPayload(quakeRegex.Groups[2].ToString() == "1");
@@ -140,8 +167,8 @@ namespace OmoriDialogueParser
 
             switch (text)
             {
-                case @"\#": // ESCAPE
-                    payload = new TextPayload(string.Empty);
+                case @"\G": // CURRENCY NAME
+                    payload = new TextPayload("clams/$");
                     return true;
 
                 case @"\!": // WAIT FOR INPUT (todo: add some kinda icon)

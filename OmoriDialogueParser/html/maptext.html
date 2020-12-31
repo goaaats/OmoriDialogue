@@ -12,203 +12,204 @@
     <meta name="keywords" content="OMORI, text, dialogue, speech">
 </head>
 <body>
+<div class="nav"><span>Dialogue</span> | <a href="variables.html">Variables</a> | <a href="switches.html">Switches</a></div>
 
 <h2>OMORI Dialogue</h2>
-This page lists all of the spoken dialogue in OMORI, without battle text as of now.
-<span style="color: red">ATTENTION: SPOILERS AHEAD!!</span>
-<br/>
-If you notice any mistakes, please open an issue <a href="https://github.com/goaaats/OmoriDialogue">on my GitHub repo.</a>
-<br/>
-<br/>
-<select id="characters" name="characters">
-    <option value="">Select one...</option>
-</select>
-<br/>
-<b><a href="index.html">Sort by character instead...</a></b>
-<br/>
-<br/>
-<div id="textboxes">
-</div>
-<noscript>
-    <p>Sorry, but you need to enable JavaScript to use this.</p>
-</noscript>
-<div>
-    <p>
-        <span class="credits">Credits:</span>
-        <br/>
-        <a href="http://www.omori-game.com/">OMORI and fonts (c) OMOCAT, 2020</a>
-        <br/>
-        Web page design based on <a href="https://hushbugger.github.io/dialogue">hushbugger.github.io</a>
-    </p>
-</div>
-<script>
-    "use strict";
+    This page lists all of the spoken dialogue in OMORI, without battle text as of now.
+    <span style="color: red">ATTENTION: SPOILERS AHEAD!!</span>
+    <br />
+    If you notice any mistakes, please open an issue <a href="https://github.com/goaaats/OmoriDialogue">on my GitHub repo.</a>
+    <br />
+    <br />
+    <select id="characters" name="characters">
+        <option value="">Select one...</option>
+    </select>
+    <br />
+    <b><a href="index.html">Sort by character instead...</a></b>
+    <br />
+    <br />
+    <div id="textboxes">
+    </div>
+    <noscript>
+        <p>Sorry, but you need to enable JavaScript to use this.</p>
+    </noscript>
+    <div>
+        <p>
+            <span class="credits">Credits:</span>
+            <br />
+            <a href="http://www.omori-game.com/">OMORI and fonts (c) OMOCAT, 2020</a>
+            <br />
+            Web page design based on <a href="https://hushbugger.github.io/dialogue">hushbugger.github.io</a>
+        </p>
+    </div>
+    <script>
+        "use strict";
 
-    function textbox(character, index, doFaces) {
+        function textbox(character, index, doFaces) {
 
-        var container = document.createElement('div');
+            var container = document.createElement('div');
 
-        var text = t[character][index];
+            var text = t[character][index];
 
-        if (text.s !== null) {
-            var name = document.createElement('div');
-            name.classList.add('speakerbox');
-            var link = document.createElement('a');
-            link.href = 'index.html#' + text.s;
-            link.classList.add('speakerbox');
-            link.innerHTML = text.s;
-            name.appendChild(link);
-
-            container.appendChild(name);
-        }
-
-        var msgText = text.h;
-        var hasNoText = false;
-        if (msgText === "") {
-            msgText = "Message has no text...";
-            hasNoText = true;
-        }
-
-        var textAndFace = document.createElement('div');
-
-        var box = document.createElement('div');
-        box.classList.add('textbox');
-        var linkTb = document.createElement('a');
-        linkTb.href = '#' + character + ':' + index;
-        linkTb.classList.add('textbox');
-
-        if (hasNoText)
-            linkTb.classList.add('notext');
-
-        linkTb.innerHTML = msgText;
-        box.appendChild(linkTb);
-
-        textAndFace.appendChild(box);
-        textAndFace.classList.add('faceandtext');
-
-        if (text.fs !== null && doFaces) {
-            var face = document.createElement('div');
-
-            var fCol = Math.floor(text.fi % 4);
-            var fRow = Math.floor(text.fi / 4);
-            var cOffset = (fCol) * 106;
-            var rOffset = (fRow) * 106;
-
-            face.classList.add('facebox');
-            face.style = "background-image: url('faces/" + text.fs + ".png'); background-position: -" + cOffset + "px -" + rOffset + "px;";
-
-            textAndFace.appendChild(face);
-        }
-
-        container.appendChild(textAndFace);
-
-        return container;
-    }
-
-    function addBox(character, index, doFaces) {
-        document.getElementById('textboxes').appendChild(textbox(character, index, doFaces));
-    }
-
-    function addBoxes(character, doFaces) {
-        for (var i = 0; i < t[character].length; i++) {
-            addBox(character, i, doFaces);
-        }
-    }
-
-    function setSelection(character, indexes) {
-        var options = document.getElementById('characters').children;
-        for (var i = 0; i < options.length; i++) {
-            if (options[i].value === character) {
-                options[i].selected = true;
-            }
-        }
-        if (indexes === null) {
-            window.location.hash = "#" + character;
-        } else {
-            window.location.hash = "#" + character + ":" + indexes.join();
-        }
-        if (character === "") {
-            document.title = "OMORI dialogue dump";
-        } else {
-            document.title = "OMORI dialogue dump: " + character;
-        }
-    }
-
-    function writeDialogue(character) {
-        var indexes = null;
-        var asList = character.split(':');
-        if (asList.length === 2) {
-            character = asList[0];
-            indexes = asList[1].split(',');
-            if (indexes.length === 1 && indexes[0] === "") {
-                indexes = [];
-            }
-            for (var i = 0; i < indexes.length; i++) {
-                indexes[i] = parseInt(indexes[i]);
-            }
-        }
-        if (t[character] === undefined) {
-            character = "";
-        }
-        document.getElementById('textboxes').innerHTML = "";
-        setSelection(character, indexes);
-        if (character === "") {
-            var boxes = document.getElementById('textboxes');
-            var characters = Object.keys(t);
-            characters.sort()
-            for (var i = 0; i < characters.length; i++) {
-                var heading = document.createElement('h1');
-                heading.classList.add('heading');
+            if (text.s !== null) {
+                var name = document.createElement('div');
+                name.classList.add('speakerbox');
                 var link = document.createElement('a');
-                link.classList.add('heading');
-                link.appendChild(document.createTextNode(characters[i]));
-                link.href = "#" + characters[i];
-                heading.appendChild(link);
-                boxes.appendChild(heading);
-                addBoxes(characters[i], false);
+                link.href = 'index.html#' + text.s;
+                link.classList.add('speakerbox');
+                link.innerHTML = text.s;
+                name.appendChild(link);
+
+                container.appendChild(name);
             }
-        } else if (character !== "") {
-            if (indexes !== null) {
-                for (var i = 0; i < indexes.length; i++) {
-                    addBox(character, indexes[i], true);
-                }
-            } else {
-                addBoxes(character, true);
+
+            var msgText = text.h;
+            var hasNoText = false;
+            if (msgText === "") {
+                msgText = "Message has no text...";
+                hasNoText = true;
+            }
+
+            var textAndFace = document.createElement('div');
+
+            var box = document.createElement('div');
+            box.classList.add('textbox');
+            var linkTb = document.createElement('a');
+            linkTb.href = '#' + character + ':' + index;
+            linkTb.classList.add('textbox');
+
+            if (hasNoText)
+                linkTb.classList.add('notext');
+
+            linkTb.innerHTML = msgText;
+            box.appendChild(linkTb);
+
+            textAndFace.appendChild(box);
+            textAndFace.classList.add('faceandtext');
+
+            if (text.fs !== null && doFaces) {
+                var face = document.createElement('div');
+
+                var fCol = Math.floor(text.fi % 4);
+                var fRow = Math.floor(text.fi / 4);
+                var cOffset = (fCol) * 106;
+                var rOffset = (fRow) * 106;
+
+                face.classList.add('facebox');
+                face.style = "background-image: url('faces/" + text.fs + ".png'); background-position: -" + cOffset + "px -" + rOffset + "px;";
+
+                textAndFace.appendChild(face);
+            }
+
+            container.appendChild(textAndFace);
+
+            return container;
+        }
+
+        function addBox(character, index, doFaces) {
+            document.getElementById('textboxes').appendChild(textbox(character, index, doFaces));
+        }
+
+        function addBoxes(character, doFaces) {
+            for (var i = 0; i < t[character].length; i++) {
+                addBox(character, i, doFaces);
             }
         }
-    }
 
-    var characters = Object.keys(t);
-    characters.sort();
-    var select = document.getElementById('characters');
-    for (var i = 0; i < characters.length; i++) {
-        var option = document.createElement('option');
-        option.value = characters[i];
-        option.appendChild(document.createTextNode(characters[i]));
-        select.options.add(option);
-    }
-
-    document.addEventListener('DOMContentLoaded',
-        function() {
-            document.querySelector('select[name="characters"]').onchange = function(event) {
-                window.location.hash = "#" + event.target.value;
-            };
-
-            if (window.location.hash === "") {
-                document.querySelector('select[name="characters"]').selectedIndex = 2;
-                window.location.hash = "#01_cutscenes_neighbors";
+        function setSelection(character, indexes) {
+            var options = document.getElementById('characters').children;
+            for (var i = 0; i < options.length; i++) {
+                if (options[i].value === character) {
+                    options[i].selected = true;
+                }
             }
-        },
-        false);
+            if (indexes === null) {
+                window.location.hash = "#" + character;
+            } else {
+                window.location.hash = "#" + character + ":" + indexes.join();
+            }
+            if (character === "") {
+                document.title = "OMORI dialogue dump";
+            } else {
+                document.title = "OMORI dialogue dump: " + character;
+            }
+        }
 
-    window.onhashchange = function() {
-        writeDialogue(decodeURIComponent(window.location.hash.substr(1)));
-    }
+        function writeDialogue(character) {
+            var indexes = null;
+            var asList = character.split(':');
+            if (asList.length === 2) {
+                character = asList[0];
+                indexes = asList[1].split(',');
+                if (indexes.length === 1 && indexes[0] === "") {
+                    indexes = [];
+                }
+                for (var i = 0; i < indexes.length; i++) {
+                    indexes[i] = parseInt(indexes[i]);
+                }
+            }
+            if (t[character] === undefined) {
+                character = "";
+            }
+            document.getElementById('textboxes').innerHTML = "";
+            setSelection(character, indexes);
+            if (character === "") {
+                var boxes = document.getElementById('textboxes');
+                var characters = Object.keys(t);
+                characters.sort()
+                for (var i = 0; i < characters.length; i++) {
+                    var heading = document.createElement('h1');
+                    heading.classList.add('heading');
+                    var link = document.createElement('a');
+                    link.classList.add('heading');
+                    link.appendChild(document.createTextNode(characters[i]));
+                    link.href = "#" + characters[i];
+                    heading.appendChild(link);
+                    boxes.appendChild(heading);
+                    addBoxes(characters[i], false);
+                }
+            } else if (character !== "") {
+                if (indexes !== null) {
+                    for (var i = 0; i < indexes.length; i++) {
+                        addBox(character, indexes[i], true);
+                    }
+                } else {
+                    addBoxes(character, true);
+                }
+            }
+        }
 
-    if (window.location.hash !== "") {
-        window.onhashchange();
-    }
-        
-</script>
+        var characters = Object.keys(t);
+        characters.sort();
+        var select = document.getElementById('characters');
+        for (var i = 0; i < characters.length; i++) {
+            var option = document.createElement('option');
+            option.value = characters[i];
+            option.appendChild(document.createTextNode(characters[i]));
+            select.options.add(option);
+        }
+
+        document.addEventListener('DOMContentLoaded',
+            function () {
+                document.querySelector('select[name="characters"]').onchange = function (event) {
+                    window.location.hash = "#" + event.target.value;
+                };
+
+                if (window.location.hash === "") {
+                    document.querySelector('select[name="characters"]').selectedIndex = 2;
+                    window.location.hash = "#01_cutscenes_neighbors";
+                }
+            },
+            false);
+
+        window.onhashchange = function () {
+            writeDialogue(decodeURIComponent(window.location.hash.substr(1)));
+        }
+
+        if (window.location.hash !== "") {
+            window.onhashchange();
+        }
+
+    </script>
 </body>
 </html>
