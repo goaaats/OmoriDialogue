@@ -20,6 +20,9 @@
     <None Update="template\switches.htmt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="template\maps.htmt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="template\variables.htmt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using OmoriDialogueParser.Model;
+using OmoriDialogueParser.Model.Data;
 using OmoriDialogueParser.Model.MessageTextPayloads;
 
 namespace OmoriDialogueParser
@@ -21,7 +22,7 @@ namespace OmoriDialogueParser
 
             var langDir = new DirectoryInfo(args[0]);
 
-            var system = JsonConvert.DeserializeObject<Model.System>(File.ReadAllText("System.json"));
+            var system = JsonConvert.DeserializeObject<Model.System>(File.ReadAllText(Path.Combine("data", "System.json")));
 
             var fileParsedDict = new Dictionary<string, IEnumerable<ExportMessage>>();
 
@@ -125,6 +126,40 @@ namespace OmoriDialogueParser
 
             var switchesTemplate = File.ReadAllText(Path.Combine("template", "switches.htmt"));
             File.WriteAllText(Path.Combine("html", "switches.html"), string.Format(switchesTemplate, switches));
+
+            ExportMaps();
+        }
+
+        private static void ExportMaps()
+        {
+            Directory.CreateDirectory(Path.Combine("html", "map", "doc"));
+
+            var mapInfos =
+                JsonConvert.DeserializeObject<List<MapEntry>>(File.ReadAllText(Path.Combine("data", "MapInfos.json")))
+                    .Where(x => x != null).OrderBy(x => x.Order).ToArray();
+
+            var maps = string.Empty;
+            for (var i = 0; i < mapInfos.Length; i++)
+            {
+                var id = mapInfos[i].Id;
+
+                var mapLink = $"<a href=\"map.html#{id}\">{mapInfos[i].Name}</a>";
+                if (!File.Exists(Path.Combine("html", "map", "img", $"map{id}.png")))
+                    mapLink = mapInfos[i].Name;
+
+                maps +=
+                    $"\n<tr>\r\n            <td><a id=\"m{id}\" href=\"#m{id}\">{id}</a></td>\r\n            <td>{mapLink}</td>\r\n        </tr>";
+
+                var eMap = new ExportMap();
+                eMap.Name = mapInfos[i].Name;
+                var realDataPath = Path.Combine("data", $"Map{id:D3}.json");
+                if (File.Exists(realDataPath))
+                    eMap.DataMap = JsonConvert.DeserializeObject(File.ReadAllText(realDataPath));
+                File.WriteAllText(Path.Combine("html", "map", "doc", $"map{id}.json"), JsonConvert.SerializeObject(eMap));
+            }
+
+            var mapsTemplate = File.ReadAllText(Path.Combine("template", "maps.htmt"));
+            File.WriteAllText(Path.Combine("html", "maps.html"), string.Format(mapsTemplate, maps));
         }
     }
 }

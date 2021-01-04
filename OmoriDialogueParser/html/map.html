@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="text_bychara.js"></script>
+    <link rel="stylesheet" type="text/css" href="text.css">
+    <link rel="stylesheet" type="text/css" href="map.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <title>OMORI variables</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OMORI variables">
+    <meta name="keywords" content="OMORI, text, dialogue, speech">
+</head>
+<body>
+    <div class="nav"><a href="index.html">Dialogue</a> | <a href="variables.html">Variables</a> | <a href="switches.html">Switches</a> | <a href="maps.html">Maps</a></div>
+
+<h2>OMORI Map: <span id="mapName"></span></h2>
+<br />
+<div class="mapcontainer">
+    <img id="mapImg" alt="map"/>
+</div>
+<script>
+    const mapId = window.location.hash.substr(1);
+    console.log("Loading map " + mapId);
+
+    const img = document.getElementById("mapImg");
+    img.src = "map/img/map" + mapId + ".png";
+    
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'map/doc/map' + mapId + '.json', true);
+
+// If specified, responseType must be empty string or "text"
+    xhr.responseType = 'text';
+
+    xhr.onload = function () {
+        if (xhr.readyState === xhr.DONE) {
+            if (xhr.status === 200) {
+                document.thisMap = JSON.parse(xhr.responseText);
+                console.log(document.thisMap);
+
+                const mapName = document.getElementById("mapName");
+                mapName.innerText = document.thisMap.Name;
+            }
+        }
+    };
+
+    xhr.send(null);
+
+    
+</script>
+<noscript>
+    <p>dude, you gotta have js on! wow!</p>
+</noscript>
+<div>
+    <p>
+        <span class="credits">Credits:</span>
+        <br/>
+        <a href="http://www.omori-game.com/">OMORI and fonts (c) OMOCAT, 2020</a>
+        <br/>
+        Web page design based on <a href="https://hushbugger.github.io/dialogue">hushbugger.github.io</a>
+    </p>
+</div>
+</body>
+</html>

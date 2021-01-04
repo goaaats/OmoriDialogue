@@ -12,7 +12,7 @@
     <meta name="keywords" content="OMORI, text, dialogue, speech">
 </head>
 <body>
-    <div class="nav"><a href="index.html">Dialogue</a> | <a href="variables.html">Variables</a> | <span>Switches</span></div>
+    <div class="nav"><a href="index.html">Dialogue</a> | <a href="variables.html">Variables</a> | <span>Switches</span> | <a href="maps.html">Maps</a></div>
 
 <h2>OMORI Switches</h2>
 <br />

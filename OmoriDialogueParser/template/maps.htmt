@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="text_bychara.js"></script>
+    <link rel="stylesheet" type="text/css" href="text.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <title>OMORI maps</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OMORI maps">
+    <meta name="keywords" content="OMORI, text, dialogue, speech">
+</head>
+<body>
+    <div class="nav"><a href="index.html">Dialogue</a> | <a href="variables.html">Variables</a> | <a href="switches.html">Switches</a> | <span>Maps</span></div>
+
+<h2>OMORI Maps</h2>
+<br />
+<div>
+    <table class="list">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+        </tr>
+        {0}
+    </table>
+</div>
+<div>
+    <p>
+        <span class="credits">Credits:</span>
+        <br/>
+        <a href="http://www.omori-game.com/">OMORI and fonts (c) OMOCAT, 2020</a>
+        <br/>
+        Web page design based on <a href="https://hushbugger.github.io/dialogue">hushbugger.github.io</a>
+    </p>
+</div>
+</body>
+</html>

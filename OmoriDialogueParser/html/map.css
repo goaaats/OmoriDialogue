@@ -1,0 +1,6 @@
+div.mapcontainer {
+    width: auto;
+    overflow-x: scroll;
+    white-space: nowrap;
+    height: 650px;
+}
